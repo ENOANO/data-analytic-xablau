@@ -1,6 +1,5 @@
 import xlrd
 
-
 file = xlrd.open_workbook('estudantes.xlsx')
 sheets = file.sheet_by_index(0)
 
@@ -15,5 +14,12 @@ for x in range(sheets.nrows):
     if aluno:
         alunos.append(aluno)
 
-for dd in alunos:
-    print(dd)
+for aluno in alunos:
+    print("Aluno " + aluno["Nome"])
+    media = (float(aluno["Ciencias"]) + float(aluno["Matematica"]) + float(aluno["Fisica"])) / 3
+    print("Media " + str(media))
+    assiduidade = (int(aluno["Frequencia"]) / 260) * 100
+    if media >= 7 and assiduidade >= 70: 
+        print("Situação: Aprovado")
+    else:
+        print("Situação: Reprovado")
