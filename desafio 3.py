@@ -14,12 +14,21 @@ for x in range(sheets.nrows):
     if aluno:
         alunos.append(aluno)
 
+aprovados = []
+reprovados = []
+
 for aluno in alunos:
-    print("Aluno: " + aluno["Nome"])
     media = (float(aluno["Ciencias"]) + float(aluno["Matematica"]) + float(aluno["Fisica"])) / 3
-    print("Media " + str(media))
     assiduidade = (int(aluno["Frequencia"]) / 260) * 100
-    if media >= 7 and assiduidade >= 70: 
-        print("Situação: Aprovado\n")
+    resumo_aluno = {
+        "Nome": aluno["Nome"],
+        "Media":media
+        }
+    if media >= 7 and assiduidade >= 70:
+        aprovados.append(resumo_aluno)
     else:
-        print("Situação: Reprovado\n")
+        reprovados.append(resumo_aluno)
+
+print (aprovados)
+print ("***")
+print (reprovados)
