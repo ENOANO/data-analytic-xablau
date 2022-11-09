@@ -1,9 +1,12 @@
 import os
 from time import sleep
+from model import Maquina, Conta
+
 
 def start():
     contas = []
-    
+    conta_logada = None
+
     os.system('clear')
     print("***************************\n Bem-vindo ao Banco Comuna \n***************************")
     print("\nPARA INICIAR, CADASTRE UM USUÁRIO E FAÇA UM DEPÓSITO INICIAL\n")
@@ -11,60 +14,58 @@ def start():
     controle = True
     
     while controle:
-            
-        menu()
-
-        opcao_menu = entrada("Digite uma opção: ")
-
-        if opcao_menu == "1":
-            if contas:
-                ver_saldo(contas[0])
-            else:
-                print ("Não há contas cadastradas")
-
-        elif opcao_menu == "2":
-            depositar(contas[0])
-
-        elif opcao_menu == "3":
-            sacar(contas[0])
-
-        elif opcao_menu == "4":
-            cadastrar(contas)
-
-        elif opcao_menu == "5":
-            print("As seguintes contas estão cadastradas atualmente:\n")
-            print(contas)
+        if conta_logada is None:
+            conta_logada = login(contas)
             limpa_tela()
+        
+        if conta_logada:
+            Maquina.menu()
 
-        elif opcao_menu =="6":
-           login(contas)
-           limpa_tela()
+            opcao_menu = entrada("Digite uma opção: ")
 
-        elif opcao_menu == "0":
-            controle = False
-            print("*************************\n Adeus ao Banco Comuna \n *****************")
+            if opcao_menu == "1":
+                ver_saldo(conta_logada)
+                Maquina.menu()
+                
+            elif opcao_menu == "2":
+                depositar(conta_logada)
+                Maquina.menu()
 
-        else:
-            print ("Opcao inválida!")
+            elif opcao_menu == "3":
+                sacar(conta_logada)
+                Maquina.menu()
 
-def menu():
-    os.system('clear')
-    print ("MENU PRINCIPAL")
-    print ("1 - Saldo")
-    print ("2 - Deposito")
-    print ("3 - Saque")
-    print ("4 - Cadastrar novo usuario")
-    print ("5 - Exibir contas")
-    print ("6 - Mudar usuario")
-    print ("0 - Sair")
+            elif opcao_menu == "4":
+                cadastrar(contas)
+                Maquina.menu()
+
+            elif opcao_menu == "5":
+                print("As seguintes contas estão cadastradas atualmente:\n")
+                print(conta_logada)
+                limpa_tela()
+                Maquina.menu()
+
+            elif opcao_menu =="6":
+                conta_logada = login(contas)
+                limpa_tela()
+                Maquina.menu()
+            
+            elif opcao_menu == "7":
+                conta_logada = None
+                print("*************************\n Adeus ao Banco Comuna \n *****************")
+
+            else:
+                print ("Opcao inválida!")
+
 
 def entrada(texto):
     return input(texto)
     
 def limpa_tela():
-    sleep(4)
-    os.system('clear')
-    menu()
+    c = input("Digite qualquer coisa para continuar")
+    if c:
+        os.system('clear')
+
 
 def ver_saldo(dicionario):
     print ("Usuário: " + str(dicionario["Usuario"]))
@@ -78,6 +79,7 @@ def depositar(dicionario):
     print ("Usuário: " + str(dicionario["Usuario"]))
     print ("Saldo atual: " + str(dicionario["Saldo"]))
     limpa_tela()
+
 
 def sacar(dicionario):
     valor_saque = float(entrada("Digite o valor de saque: "))
@@ -104,13 +106,11 @@ def cadastrar(contas):
 def login(contas):
     usr = input("Digite o nome do usuário: ")
     pwd = input("Digite a senha: ")
-    login = 1
-    while login != 1:
-        for conta in contas:
-            if usr == conta["Usuario"] and pwd == conta["Senha"]:
-                login = 1
-                print("Login realizado com sucesso!\nRetornando ao menu inicial...")
-                limpa_tela()
-            else:
-                print("Login incorreto!\nRetornando ao menu inicial...")
-                limpa_tela()
+    for conta in contas:
+        if usr == conta["Usuario"] and pwd == conta["Senha"]:
+            print("Login realizado com sucesso!\nRetornando ao menu inicial...")
+            limpa_tela()
+            return conta
+            
+    print("Login incorreto!\nRetornando ao menu inicial...")
+    return None
