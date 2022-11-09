@@ -1,6 +1,5 @@
-import os
-import time
 from funcoes import start
+import os
 
 # Separar as opções em funções. DEIXAR O CODIGO MAIS LIMPO POSSIVEL.
 
