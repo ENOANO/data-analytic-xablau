@@ -6,8 +6,8 @@ class Conta:
         self.senha = senha
         self.saldo = saldo
 
-    def sacar(self):
-        pass
+    def sacar(self, valor):
+        self.saldo = self.saldo-valor
 
     def depositar(self, valor):
         self.saldo += valor

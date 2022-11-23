@@ -2,7 +2,6 @@ import os
 from time import sleep
 from model import Maquina, Conta
 
-
 def start():
     contas = []
     conta_logada = None
@@ -57,7 +56,6 @@ def start():
             else:
                 print ("Opcao inválida!")
 
-
 def entrada(texto):
     return input(texto)
     
@@ -65,7 +63,6 @@ def limpa_tela():
     c = input("Digite qualquer coisa para continuar")
     if c:
         os.system('clear')
-
 
 def ver_saldo(dicionario):
     print ("Usuário: " + str(dicionario["Usuario"]))
@@ -80,14 +77,13 @@ def depositar(dicionario):
     print ("Saldo atual: " + str(dicionario["Saldo"]))
     limpa_tela()
 
-
-def sacar(dicionario):
+def sacar(conta):
     valor_saque = float(entrada("Digite o valor de saque: "))
     if valor_saque > dicionario["Saldo"]:
         print ("Saldo insuficiente!")
         limpa_tela()
     else:
-        dicionario["Saldo"]=dicionario["Saldo"]-valor_saque
+        conta.sacar (valor_saque)
         print ("Saque efetuado com sucesso!")
         print ("Usuário: " + str(dicionario["Usuario"]))
         print ("Saldo atual: " + str(dicionario["Saldo"]))
